@@ -1,5 +1,5 @@
 // Call the API
-fetch("http://localhost:3000/api/products")
+fetch(`http://localhost:3000/api/products/`)
       .then(function (res) {
             if (res.ok) {
                   // Call the API in JSON format
@@ -12,6 +12,7 @@ fetch("http://localhost:3000/api/products")
             for (let data of kanapData) {
                   const link = document.createElement("a");
                   items.appendChild(link);
+                  link.setAttribute("href", `./product.html?id=${data._id}`);
 
                   const article = document.createElement("article");
                   link.appendChild(article);
