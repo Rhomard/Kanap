@@ -8,27 +8,37 @@ fetch("http://localhost:3000/api/products/")
       })
       // Get the Kanap data
       .then(function getKanapData(kanapData) {
-            let productsArray = JSON.parse(localStorage.getItem("products"));
-            console.log(productsArray);
-            // if (productsArray === null) {
+            let products = JSON.parse(localStorage.getItem("products"));
+            loopToCreateProducts(products, kanapData);
+            // if (products === null) {
             //       const emptyCart = (document.querySelector("#card_setting").innerHTML = "Votre panier <br> est vide");
             //       console.log("Panier vide");
-            // } else {
-            //       for (let i = 0; i < productsArray.length; i++) {
-            //             if ((productsArray[i].id = kanapData[i]._id)) {
-            //                   console.log("ça marche");
-            //                   createProductCard(kanapData[i]);
-            //             } else {
-            //                   console.log("ça marche pas");
-            //             }
+            // }
+
+            // for (i = 0; i < products.length; i++) {
+            //       if (products[i].id === kanapData[i]._id) {
+            //             console.log("Coucou");
+            //             createProductCard(products, kanapData);
+            //       } else {
+            //             console.log("Marche po");
             //       }
             // }
-            createProductCard(kanapData[1], productsArray[1]);
-            createProductCard(kanapData[0], productsArray[0]);
       })
       .catch(function (err) {
             console.log(err);
       });
+
+function loopToCreateProducts(localStorage, api) {
+      for (i = 0; i < localStorage.length; i++) {
+            if (localStorage.id === api._id) {
+                  console.log("Coucou");
+                  console.log(localStorage.length);
+                  createProductCard(localStorage, api);
+            } else {
+                  console.log("Marche po");
+            }
+      }
+}
 
 function createProductCard(api, localStorage) {
       const article = document.createElement("article");
@@ -95,13 +105,13 @@ function createProductCard(api, localStorage) {
 
 // EVENT LISTENER =================== DELETE THIS PRODUCT
 
-const deleteItem = document.getElementsByClassName("deleteItem");
-console.log(deleteItem);
-deleteItem.addEventListener("click", function () {
-      if ((deleteItem[i] = productsArray[i])) deleteProduct();
-});
+// const deleteItem = document.getElementsByClassName("deleteItem");
+// console.log(deleteItem);
+// deleteItem.addEventListener("click", function () {
+//       if ((deleteItem[i] = products[i])) deleteProduct();
+// });
 
-function deleteProduct() {
-      let productsArray = JSON.parse(localStorage.getItem("products"));
-      localStorage.clear(productsArray[i]);
-}
+// function deleteProduct() {
+//       let products = JSON.parse(localStorage.getItem("products"));
+//       localStorage.clear(products[i]);
+// }

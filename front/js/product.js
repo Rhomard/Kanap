@@ -51,30 +51,100 @@ function loopForOptions(oneKanapData) {
 
 // EVENT LISTENER =================== ADD TO CART
 
+function addDataToCart() {
+      let color = document.querySelector("#colors").value;
+      let qty = document.querySelector("#quantity").valueAsNumber; //   let qtyNumber = parseInt(qty, 10);
+      let addProduct = { color: color, id: id, quantity: qty };
+
+      let products = JSON.parse(localStorage.getItem("products"));
+
+      if (color == "" || qty == "") {
+            alert("Vous devez obligatoirement choisir une couleur et indiquer une quantité.");
+      } else if (products) {
+            for (i = 0; i < products.length; i++) {
+                  if (products[i].id === addProduct.id && products[i].color === addProduct.color) {
+                        console.log("J'ajoute la quantité");
+                        products[i].quantity = products[i].quantity + addProduct.quantity;
+                        let productsJson = JSON.stringify(products);
+                        localStorage.setItem("products", productsJson);
+                        break;
+                  } else {
+                        products.push(addProduct);
+                        let productsJson = JSON.stringify(products);
+                        localStorage.setItem("products", productsJson);
+                        console.log("Je crée un objet en plus");
+                        break;
+                  }
+            }
+      } else {
+            products = [];
+            products.push(addProduct);
+            let productsJson = JSON.stringify(products);
+            localStorage.setItem("products", productsJson);
+            console.log("Je crée le tableau");
+      }
+
+      //   if (products) {
+      //         for (i = 0; i < products.length; i++) {
+      //               if (products[i].id.indexOf(addProduct.id) !== -1 && products[i].color.indexOf(addProduct.color) !== -1) {
+      //                     console.log("J'ajoute la quantité");
+      //                     products[i].quantity = products[i].quantity + addProduct.quantity;
+      //                     // let productsJson = JSON.stringify(products);
+      //                     // localStorage.setItem("products", productsJson);
+      //                     break;
+      //               } else {
+      //                     products.push(addProduct);
+      //                     let productsJson = JSON.stringify(products);
+      //                     localStorage.setItem("products", productsJson);
+      //                     console.log("Je crée un objet en plus");
+      //                     break;
+      //               }
+      //         }
+      //   } else {
+      //         products = [];
+      //         products.push(addProduct);
+      //         let productsJson = JSON.stringify(products);
+      //         localStorage.setItem("products", productsJson);
+      //         console.log("Je crée le tableau");
+      //   }
+}
+
+//   let products = JSON.parse(localStorage.getItem("products"));
+
+// IF products already created add the addProduct ELSE create products and add the addProduct
+
+//       if (products) {
+//             console.log("Tableau déjà créé");
+//             products.map((productsObject) => {
+//                   if (addProduct.id === productsObject.id && addProduct.color === productsObject.color) {
+//                         productsObject.quantity = productsObject.quantity + addProduct.quantity;
+//                         console.log("J'ai ajouté la quantité");
+//                   } else {
+//                         products.push(addProduct);
+//                         let productsJson = JSON.stringify(products);
+//                         localStorage.setItem("products", productsJson);
+//                         console.log("Je crée un objet en plus");
+//                   }
+//             });
+//       } else {
+//             products = [];
+//             products.push(addProduct);
+//             let productsJson = JSON.stringify(products);
+//             localStorage.setItem("products", productsJson);
+//             console.log("Je crée le tableau");
+//       }
+// }
+
 const addToCart = document.getElementById("addToCart");
 addToCart.addEventListener("click", function () {
       addDataToCart();
 });
 
-function addDataToCart() {
-      const color = document.querySelector("#colors").value;
-      const qty = document.querySelector("#quantity").valueAsNumber; //   const qtyNumber = parseInt(qty, 10);
-      const addProduct = { id: id, quantity: qty, color: color };
-      console.log(addProduct);
+// for (product of products) {
+//     if (product.id == addProduct.id && product.color == addProduct.color) {
+//           product.quantity = product.quantity + addProduct.quantity;
+//           console.log("J'ajoute la quantité");
 
-      let productsArray = JSON.parse(localStorage.getItem("products"));
-
-      // IF productsArray already created add the addProduct ELSE create productsArray and add the addProduct
-      if (productsArray) {
-            productsArray.push(addProduct);
-            let productsArrayJson = JSON.stringify(productsArray);
-            localStorage.setItem("products", productsArrayJson);
-            console.log(productsArray);
-      } else {
-            productsArray = [];
-            productsArray.push(addProduct);
-            let productsArrayJson = JSON.stringify(productsArray);
-            localStorage.setItem("products", productsArrayJson);
-            console.log(productsArray);
-      }
-}
+// if (product.id == addProduct.id && product.color == addProduct.color) {
+//     product.quantity = product.quantity + addProduct.quantity;
+//     console.log("J'ajoute la quantité");
