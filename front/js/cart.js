@@ -9,38 +9,30 @@ fetch("http://localhost:3000/api/products/")
       // Get the Kanap data
       .then(function getKanapData(kanapData) {
             let products = JSON.parse(localStorage.getItem("products"));
-            loopToCreateProducts(products, kanapData);
-            // if (products === null) {
-            //       const emptyCart = (document.querySelector("#card_setting").innerHTML = "Votre panier <br> est vide");
-            //       console.log("Panier vide");
-            // }
 
-            // for (i = 0; i < products.length; i++) {
-            //       if (products[i].id === kanapData[i]._id) {
-            //             console.log("Coucou");
-            //             createProductCard(products, kanapData);
-            //       } else {
-            //             console.log("Marche po");
-            //       }
-            // }
+            if (products === null) {
+                  const emptyCart = (document.querySelector("#card_setting").innerHTML = "Votre panier <br> est vide");
+                  console.log("Panier vide");
+            } else {
+                  //   loopToSearchId(products, kanapData);
+            }
       })
       .catch(function (err) {
             console.log(err);
       });
 
-function loopToCreateProducts(localStorage, api) {
-      for (i = 0; i < localStorage.length; i++) {
-            if (localStorage.id === api._id) {
-                  console.log("Coucou");
-                  console.log(localStorage.length);
-                  createProductCard(localStorage, api);
+function loopToSearchId(products, kanapData) {
+      for (let product of products) {
+            if (product.id === kanapData[0]._id) {
+                  createProductCard(products, kanapData);
             } else {
-                  console.log("Marche po");
+                  console.log(kanapData._id);
+                  console.log("Aucun id trouvé");
             }
       }
 }
 
-function createProductCard(api, localStorage) {
+function createProductCard(localStorage, api) {
       const article = document.createElement("article");
       article.classList.add("cart__item");
       cart__items.appendChild(article);
@@ -51,7 +43,7 @@ function createProductCard(api, localStorage) {
 
       const img = document.createElement("img");
       divImg.appendChild(img);
-      img.src = api.imageUrl;
+      img.src = api[0].imageUrl;
 
       const divItemContent = document.createElement("div");
       divItemContent.classList.add("cart__item__content");
