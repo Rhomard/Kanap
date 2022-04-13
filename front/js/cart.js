@@ -8,26 +8,26 @@ fetch("http://localhost:3000/api/products/")
       })
       // Get the Kanap data
       .then(function getKanapData(kanapData) {
-            let products = JSON.parse(localStorage.getItem("products"));
-
-            if (products === null) {
-                  const emptyCart = (document.querySelector("#card_setting").innerHTML = "Votre panier <br> est vide");
-                  console.log("Panier vide");
-            } else {
-                  //   loopToSearchId(products, kanapData);
-            }
+            loopToSearchId(kanapData);
       })
       .catch(function (err) {
             console.log(err);
       });
 
-function loopToSearchId(products, kanapData) {
-      for (let product of products) {
-            if (product.id === kanapData[0]._id) {
-                  createProductCard(products, kanapData);
-            } else {
-                  console.log(kanapData._id);
-                  console.log("Aucun id trouvé");
+function loopToSearchId(api) {
+      let products = JSON.parse(localStorage.getItem("products"));
+
+      if (products === null) {
+            const emptyCart = (document.querySelector("#card_setting").innerHTML = "Votre panier <br> est vide");
+            console.log("Panier vide");
+      } else {
+            for (let product of products) {
+                  for (let data of api) {
+                        if (product.id === data._id) {
+                              console.log("J'ai trouvé des ids correspondantes");
+                              createProductCard(product, data);
+                        }
+                  }
             }
       }
 }
@@ -43,7 +43,7 @@ function createProductCard(localStorage, api) {
 
       const img = document.createElement("img");
       divImg.appendChild(img);
-      img.src = api[0].imageUrl;
+      img.src = api.imageUrl;
 
       const divItemContent = document.createElement("div");
       divItemContent.classList.add("cart__item__content");
