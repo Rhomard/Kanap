@@ -68,20 +68,17 @@ function addDataToCart() {
             console.log("Je crée le tableau");
       } else {
             let itemAlreadyInCart = false;
-            let i = 0;
-            while (itemAlreadyInCart == false && i < products.length) {
-                  if (addProduct.id === products[i].id && addProduct.color === products[i].color) {
+            for (product of products) {
+                  if (addProduct.id === product.id && addProduct.color === product.color) {
                         itemAlreadyInCart = true;
-                        products[i].quantity = products[i].quantity + addProduct.quantity;
+                        product.quantity = product.quantity + addProduct.quantity;
                         console.log("J'ajoute la quantité");
                   }
-                  i++;
             }
             if (itemAlreadyInCart == false) {
                   products.push(addProduct);
                   console.log("Je crée un objet en plus");
             }
-
             let productsJson = JSON.stringify(products);
             localStorage.setItem("products", productsJson);
       }
