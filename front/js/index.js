@@ -12,6 +12,12 @@ fetch("http://localhost:3000/api/products/")
       })
       .catch(function (err) {
             console.log(err);
+
+            const items = document.querySelector("#items");
+            const messageExcuses = document.createElement("p");
+            messageExcuses.innerText = "Toutes nos excuses, la base de données des Kanaps n'est pas accessible :(";
+            items.appendChild(messageExcuses);
+            messageExcuses.style.textAlign = "center";
       });
 
 //Function that create the Kanap cards
