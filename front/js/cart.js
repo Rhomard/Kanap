@@ -327,87 +327,54 @@ function validEmail(inputEmail) {
 
 // EVENT LISTENER =================== COMMANDER
 
-// function clickToOrder() {
-//       let products = JSON.parse(localStorage.getItem("products"));
-//       const order = document.getElementById("order");
-//       order.addEventListener("click", function () {
-//             if (products === null || products.length < 1) {
-//                   alert("Votre panier est vide, veuillez ajouter des articles pour les commander.");
-//             } else if (products) {
-//                   console.log("OK");
-//                   let contact = {
-//                         firstName: firstName.value,
-//                         lastName: lastName.value,
-//                         address: address.value,
-//                         city: city.value,
-//                         email: email.value,
-//                   };
-//                   send(products, contact);
-//                   let orderIdDecimal = Math.random() * 100000;
-//                   let orderId = Math.round(orderIdDecimal);
-//                   console.log(orderId);
-//                   //   window.location = `./confirmation.html?orderId=${orderId}`;
-//             } else {
-//                   console.log("Pas OK");
-//             }
-//       });
-// }
-// clickToOrder();
+const order = document.getElementById("order");
+let products = JSON.parse(localStorage.getItem("products"));
+order.addEventListener("click", function (e) {
+      e.preventDefault();
+      if (products === null || products.length < 1) {
+            alert("Votre panier est vide, veuillez ajouter des articles pour les commander.");
+      } else if (validFirstName(firstName) && validLastName(lastName) && validAddress(address) && validCity(city) && validEmail(email)) {
+            console.log("OK");
 
-// validFirstName(firstName) && validLastName(lastName) && validAddress(address) && validCity(city) && validEmail(email)
-
-// function send(e) {
-//       e.preventDefault();
-//       fetch("http://localhost:3000/api/products/order", {
-//             method: "POST",
-//             headers: {
-//                   Accept: "application/json",
-//                   "Content-Type": "application/json",
-//             },
-//             body: JSON.stringify({ products, contact }),
-//       }).then(function (res) {
-//             if (res.ok) {
-//                   return res.json();
-//             }
-//       });
-// }
-
-// function send(e) {
-//       e.preventDefault();
-//       fetch("http://localhost:3000/api/products/order", {
-//             method: "POST",
-//             headers: {
-//                   Accept: "application/json",
-//                   "Content-Type": "application/json",
-//             },
-//             body: JSON.stringify({ prenom: document.getElementById("firstName").value }),
-//       })
-//             .then(function (res) {
-//                   if (res.ok) {
-//                         return res.json();
-//                   }
-//             })
-//             .then(function () {
-//                   let prenom = document.getElementById("firstName").value;
-//                   console.log(prenom);
-//             });
-// }
-
-// document.querySelector(".cart__order__form").addEventListener("submit", send);
-
-let contact = {
-      firstName: "Romain",
-      lastName: "Roh",
-      address: "489 route de Napoléon",
-      city: "06000 Nice",
-      email: "rom@gmail.com",
-};
-
-fetch("http://localhost:3000/api/products/order", {
-      method: "POST",
-      headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-      },
-      body: JSON.stringify(contact),
+            const productsId = [];
+            products.forEach((product) => {
+                  console.log(product.id);
+                  productsId.push(product.id);
+            });
+            console.log(productsId);
+            let order = {
+                  contact: {
+                        firstName: firstName.value,
+                        lastName: lastName.value,
+                        address: address.value,
+                        city: city.value,
+                        email: email.value,
+                  },
+                  products: productsId,
+            };
+            orderProduct(order);
+            localStorage.clear();
+      } else {
+            console.log("Pas OK");
+      }
 });
+
+function orderProduct(order) {
+      fetch("http://localhost:3000/api/products/order", {
+            method: "POST",
+            headers: {
+                  Accept: "application/json",
+                  "Content-Type": "application/json",
+            },
+            body: JSON.stringify(order),
+      })
+            .then(function (res) {
+                  if (res.ok) {
+                        return res.json();
+                  }
+            })
+            .then(function (value) {
+                  window.location = `./confirmation.html?orderId=${value.orderId}`;
+                  console.log(value);
+            });
+}
