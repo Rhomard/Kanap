@@ -11,9 +11,12 @@ fetch(`http://localhost:3000/api/products/${id}`)
             }
       })
       .then(function getOneKanapData(oneKanapData) {
+            let products = JSON.parse(localStorage.getItem("products"));
             createProductCard(oneKanapData);
             loopForTitles(oneKanapData);
             loopForOptions(oneKanapData);
+            addToLocalStorage();
+            loopForTotalQty(products);
       })
       .catch(function (err) {
             console.log(err);
@@ -70,7 +73,6 @@ function addDataToCart() {
       let color = document.querySelector("#colors").value;
       let qty = document.querySelector("#quantity").valueAsNumber; //   let qtyNumber = parseInt(qty, 10);
       let addProduct = { color: color, id: id, quantity: qty };
-
       let products = JSON.parse(localStorage.getItem("products"));
 
       if (color == "" || qty == "" || isNaN(qty) == true) {
@@ -111,7 +113,29 @@ function addDataToCart() {
       //   }
 }
 
-const addToCart = document.getElementById("addToCart");
-addToCart.addEventListener("click", function () {
-      addDataToCart();
-});
+function addToLocalStorage() {
+      const addToCart = document.getElementById("addToCart");
+      addToCart.addEventListener("click", function () {
+            addDataToCart();
+
+            let products = JSON.parse(localStorage.getItem("products"));
+            loopForTotalQty(products);
+      });
+}
+
+// TOTAL QUANTITY ===================
+
+function loopForTotalQty(products) {
+      let sumQty = 0;
+      if (products === null) {
+            cart.innerText = `Panier`;
+      } else {
+            for (let product of products) {
+                  sumQty = sumQty + product.quantity;
+            }
+            if (sumQty >= 1) {
+                  cart = document.getElementById("cart");
+                  cart.innerText = `Panier (${sumQty})`;
+            }
+      }
+}

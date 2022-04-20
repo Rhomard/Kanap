@@ -8,12 +8,19 @@ fetch("http://localhost:3000/api/products/")
       })
       // Get the Kanap data
       .then(function getKanapData(kanapData) {
+            let products = JSON.parse(localStorage.getItem("products"));
             loopForCards(kanapData);
+            loopForTotalQty(products);
       })
       .catch(function (err) {
             console.log(err);
 
+            const titles = document.querySelector(".titles");
+            titles.remove();
+
             const items = document.querySelector("#items");
+            items.style.marginTop = "135px";
+
             const messageExcuses = document.createElement("p");
             messageExcuses.innerText = "Toutes nos excuses, la base de données des Kanaps n'est pas accessible :(";
             items.appendChild(messageExcuses);
@@ -47,5 +54,22 @@ function createKanapCard(dataKanap) {
 function loopForCards(dataKanap) {
       for (let data of dataKanap) {
             createKanapCard(data);
+      }
+}
+
+// TOTAL QUANTITY ===================
+
+function loopForTotalQty(products) {
+      let sumQty = 0;
+      if (products === null) {
+            cart.innerText = `Panier`;
+      } else {
+            for (let product of products) {
+                  sumQty = sumQty + product.quantity;
+            }
+            if (sumQty >= 1) {
+                  cart = document.getElementById("cart");
+                  cart.innerText = `Panier (${sumQty})`;
+            }
       }
 }
