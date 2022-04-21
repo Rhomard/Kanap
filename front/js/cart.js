@@ -226,7 +226,7 @@ function validFirstName(inputFirstName) {
       let firstNameRegExp = new RegExp("^([A-Z][a-z]+ ?-?)*$");
 
       if (!firstNameRegExp.test(inputFirstName.value)) {
-            document.getElementById("firstNameErrorMsg").innerText = "Votre prénom doit commencer par une majuscule.";
+            document.getElementById("firstNameErrorMsg").innerText = "Votre prénom doit commencer par une majuscule et ne pas contenir de chiffre.";
             return false;
       } else if (inputFirstName.value.length < 3) {
             document.getElementById("firstNameErrorMsg").innerText = "Votre prénom doit contenir au moins 3 caractères.";
@@ -248,7 +248,7 @@ function validLastName(inputLastName) {
       let lastNameRegExp = new RegExp("^([A-Z][a-z]+ ?-?)*$");
 
       if (!lastNameRegExp.test(inputLastName.value)) {
-            document.getElementById("lastNameErrorMsg").innerText = "Votre nom doit commencer par une majuscule.";
+            document.getElementById("lastNameErrorMsg").innerText = "Votre nom doit commencer par une majuscule et ne pas contenir de chiffre.";
             return false;
       } else if (inputLastName.value.length < 3) {
             document.getElementById("lastNameErrorMsg").innerText = "Votre nom doit contenir au moins 3 caractères.";

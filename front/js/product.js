@@ -15,7 +15,7 @@ fetch(`http://localhost:3000/api/products/${id}`)
             createProductCard(oneKanapData);
             loopForTitles(oneKanapData);
             loopForOptions(oneKanapData);
-            addToLocalStorage();
+            addToLocalStorage(oneKanapData);
             loopForTotalQty(products);
       })
       .catch(function (err) {
@@ -69,7 +69,7 @@ function loopForOptions(oneKanapData) {
 
 // EVENT LISTENER =================== ADD TO CART
 
-function addDataToCart() {
+function addDataToCart(oneKanapData) {
       let color = document.querySelector("#colors").value;
       let qty = document.querySelector("#quantity").valueAsNumber; //   let qtyNumber = parseInt(qty, 10);
       let addProduct = { color: color, id: id, quantity: qty };
@@ -83,14 +83,17 @@ function addDataToCart() {
             let productsJson = JSON.stringify(products);
             localStorage.setItem("products", productsJson);
             console.log("Je crée le tableau");
+            alert(`Vous avez ajouté ${addProduct.quantity} ${oneKanapData.name} en ${addProduct.color} à votre panier.}`);
       } else {
             if (products.some((e) => e.id === addProduct.id && e.color === addProduct.color)) {
                   let objIndex = products.findIndex((product) => product.id === addProduct.id && product.color === addProduct.color);
                   products[objIndex].quantity = products[objIndex].quantity += addProduct.quantity;
                   console.log("J'ajoute la quantité");
+                  alert(`Vous avez ajouté ${addProduct.quantity} ${oneKanapData.name} en ${addProduct.color} à votre panier.`);
             } else {
                   products.unshift(addProduct);
                   console.log("Je crée un objet en plus");
+                  alert(`Vous avez ajouté ${addProduct.quantity} ${oneKanapData.name} en ${addProduct.color} à votre panier.`);
             }
             let productsJson = JSON.stringify(products);
             localStorage.setItem("products", productsJson);
@@ -113,10 +116,10 @@ function addDataToCart() {
       //   }
 }
 
-function addToLocalStorage() {
+function addToLocalStorage(oneKanapData) {
       const addToCart = document.getElementById("addToCart");
       addToCart.addEventListener("click", function () {
-            addDataToCart();
+            addDataToCart(oneKanapData);
 
             let products = JSON.parse(localStorage.getItem("products"));
             loopForTotalQty(products);
