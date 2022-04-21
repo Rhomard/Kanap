@@ -376,5 +376,10 @@ function orderProduct(order) {
             .then(function (value) {
                   window.location = `./confirmation.html?orderId=${value.orderId}`;
                   console.log(value);
+            })
+            .catch(function (err) {
+                  console.log(err);
+
+                  alert("Veuillez nous excuser, votre commande n'a pas pu être transmise.");
             });
 }
