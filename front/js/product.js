@@ -1,15 +1,18 @@
+// Get the product id thnaks to the url
 let onPageUrl = window.location;
 let url = new URL(onPageUrl);
 let id = url.searchParams.get("id");
 
 // Call the API for one object by id
 fetch(`http://localhost:3000/api/products/${id}`)
+      // First promise : if we get a response
       .then(function (res) {
             if (res.ok) {
                   // Call the API in JSON format
                   return res.json();
             }
       })
+      // Second promise : get the data in js
       .then(function getOneKanapData(oneKanapData) {
             let products = JSON.parse(localStorage.getItem("products"));
             createProductCard(oneKanapData);
@@ -18,6 +21,7 @@ fetch(`http://localhost:3000/api/products/${id}`)
             addToLocalStorage(oneKanapData);
             loopForTotalQty(products);
       })
+      // If the API cannot be called
       .catch(function (err) {
             console.log(err);
             const itemPrice = document.querySelector("#price");
@@ -31,7 +35,7 @@ fetch(`http://localhost:3000/api/products/${id}`)
             messageExcuses.style.textAlign = "center";
       });
 
-// FUNCTION FOR NUMBERS ===================
+// FUNCTION FOR NUMBERS =================== Create for the price number a space after the thousand number
 
 function nombresAvecEspaces(x) {
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
@@ -126,7 +130,7 @@ function addToLocalStorage(oneKanapData) {
       });
 }
 
-// TOTAL QUANTITY ===================
+// TOTAL QUANTITY =================== Function that refresh the total of products in the cart by the local storage
 
 function loopForTotalQty(products) {
       let sumQty = 0;

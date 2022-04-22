@@ -12,6 +12,7 @@ fetch("http://localhost:3000/api/products/")
             loopForCards(kanapData);
             loopForTotalQty(products);
       })
+      // If the API cannot be called
       .catch(function (err) {
             console.log(err);
 
@@ -57,7 +58,7 @@ function loopForCards(dataKanap) {
       }
 }
 
-// TOTAL QUANTITY ===================
+// TOTAL QUANTITY =================== Function that refresh the total of products in the cart by the local storage
 
 function loopForTotalQty(products) {
       let sumQty = 0;

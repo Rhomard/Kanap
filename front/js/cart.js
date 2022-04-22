@@ -145,7 +145,7 @@ function loopForTotalQty(products) {
       }
 }
 
-// FUNCTION FOR NUMBERS ===================
+// FUNCTION FOR NUMBERS =================== Create for the price number a space after the thousand number
 
 function nombresAvecEspaces(x) {
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
@@ -155,9 +155,7 @@ function nombresAvecEspaces(x) {
 
 function loopForTotalPrice(api, products) {
       let sumPrice = 0;
-      if (products === null) {
-            let sumPrice = 0;
-      } else {
+      if (products !== null) {
             api.forEach((data) => {
                   if (products.some((e) => e.id === data._id)) {
                         let objIndex = products.findIndex((product) => product.id === data._id);
@@ -223,7 +221,7 @@ firstName.addEventListener("change", function () {
 });
 
 function validFirstName(inputFirstName) {
-      let firstNameRegExp = new RegExp("^([A-Z][a-z]+ ?-?)*$");
+      const firstNameRegExp = new RegExp("^([A-Z][a-z]+ ?-?)*$");
 
       if (!firstNameRegExp.test(inputFirstName.value)) {
             document.getElementById("firstNameErrorMsg").innerText = "Votre prénom doit commencer par une majuscule et ne pas contenir de chiffre.";
@@ -245,7 +243,7 @@ lastName.addEventListener("change", function () {
 });
 
 function validLastName(inputLastName) {
-      let lastNameRegExp = new RegExp("^([A-Z][a-z]+ ?-?)*$");
+      const lastNameRegExp = new RegExp("^([A-Z][a-z]+ ?-?)*$");
 
       if (!lastNameRegExp.test(inputLastName.value)) {
             document.getElementById("lastNameErrorMsg").innerText = "Votre nom doit commencer par une majuscule et ne pas contenir de chiffre.";
@@ -267,7 +265,7 @@ address.addEventListener("change", function () {
 });
 
 function validAddress(inputAddress) {
-      let addressRegExp = new RegExp("^[0-9]{1,5} [A-Za-z -]+$");
+      const addressRegExp = new RegExp("^[0-9]{1,5} [A-Za-z -]+$");
 
       if (!addressRegExp.test(inputAddress.value)) {
             document.getElementById("addressErrorMsg").innerText = "Exemple : 436 avenue de Napoléon";
@@ -289,7 +287,7 @@ city.addEventListener("change", function () {
 });
 
 function validCity(inputCity) {
-      let cityRegExp = new RegExp("^[0-9]{5} ([A-Z][a-z]+ ?-?)+$");
+      const cityRegExp = new RegExp("^[0-9]{5} ([A-Z][a-z]+ ?-?)+$");
 
       if (!cityRegExp.test(inputCity.value)) {
             document.getElementById("cityErrorMsg").innerText = "Exemple : 06100 Nice";
@@ -303,7 +301,7 @@ function validCity(inputCity) {
       }
 }
 
-// LISTENING CHANGES ON INPUT =================== email
+// LISTENING CHANGES ON INPUT =================== EMAIL
 
 let email = document.getElementById("email");
 email.addEventListener("change", function () {
@@ -341,8 +339,7 @@ order.addEventListener("click", function (e) {
                   console.log(product.id);
                   productsId.push(product.id);
             });
-            console.log(productsId);
-            let order = {
+            const order = {
                   contact: {
                         firstName: firstName.value,
                         lastName: lastName.value,
@@ -353,7 +350,6 @@ order.addEventListener("click", function (e) {
                   products: productsId,
             };
             orderProduct(order);
-            localStorage.clear();
       } else {
             console.log("Pas OK");
       }
@@ -375,6 +371,7 @@ function orderProduct(order) {
             })
             .then(function (value) {
                   window.location = `./confirmation.html?orderId=${value.orderId}`;
+                  localStorage.clear();
                   console.log(value);
             })
             .catch(function (err) {
