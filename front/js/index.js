@@ -1,12 +1,13 @@
 // Call the API
 fetch("http://localhost:3000/api/products/")
+      // First promise : if we get a response
       .then(function (res) {
             if (res.ok) {
-                  // Call the API in JSON format
+                  // Get the data in JSON
                   return res.json();
             }
       })
-      // Get the Kanap data
+      // Second promise : get the js object
       .then(function getKanapData(kanapData) {
             let products = JSON.parse(localStorage.getItem("products"));
             loopForCards(kanapData);
@@ -28,7 +29,7 @@ fetch("http://localhost:3000/api/products/")
             messageExcuses.style.textAlign = "center";
       });
 
-//Function that create the Kanap cards
+// Function that create the Kanap cards
 function createKanapCard(dataKanap) {
       const link = document.createElement("a");
       items.appendChild(link);

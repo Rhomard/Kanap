@@ -1,18 +1,20 @@
 // Call the API
 fetch("http://localhost:3000/api/products/")
+      // First promise : if we get a response
       .then(function (res) {
             if (res.ok) {
-                  // Call the API in JSON format
+                  // Get the data in JSON
                   return res.json();
             }
       })
-      // Get the Kanap data
+      // Second promise : get the js object
       .then(function getKanapData(kanapData) {
             let products = JSON.parse(localStorage.getItem("products"));
             loopToSearchId(kanapData, products);
             loopForTotalQty(products);
             loopForTotalPrice(kanapData, products);
       })
+      // If the API cannot be called
       .catch(function (err) {
             console.log(err);
 
@@ -25,7 +27,9 @@ fetch("http://localhost:3000/api/products/")
             messageExcuses.style.fontSize = "20px";
       });
 
+// Function that search product by id
 function loopToSearchId(api, products) {
+      // If there is no corresponding product, cart empty and redirect to home
       if (products === null || products.length === 0) {
             const emptyCart = document.querySelector("#card_setting");
             emptyCart.innerHTML = "Votre panier <br> est vide";
@@ -33,6 +37,7 @@ function loopToSearchId(api, products) {
             voirAccueil.innerText = "Vous pouvez trouver notre gamme d'articles exclusifs sur l'accueil :)";
             emptyCart.appendChild(voirAccueil);
             voirAccueil.style.fontSize = "20px";
+            // If there is corresponding product, create a product card for each
       } else {
             for (let product of products) {
                   for (let data of api) {
@@ -46,6 +51,7 @@ function loopToSearchId(api, products) {
       }
 }
 
+// Function that create a product card in the cart
 function createProductCard(localStorage, api) {
       const article = document.createElement("article");
       article.classList.add("cart__item");
@@ -113,6 +119,7 @@ function createProductCard(localStorage, api) {
 
 // TOTAL QUANTITY ===================
 
+// Function that calculate the total quantity of products
 function loopForTotalQty(products) {
       document.getElementById("totalQuantity").innerText = "";
       let sumQty = 0;
@@ -153,6 +160,7 @@ function nombresAvecEspaces(x) {
 
 // TOTAL PRICE ===================
 
+// Function that calculate the total price of products
 function loopForTotalPrice(api, products) {
       let sumPrice = 0;
       if (products !== null) {
@@ -172,6 +180,7 @@ function loopForTotalPrice(api, products) {
 
 // EVENT LISTENER =================== CHANGE PRODUCT QUANTITY
 
+// Function that change the quantity in the local storage
 function changeQty(api, products) {
       const inputs = document.querySelectorAll(".itemQuantity");
       inputs.forEach((input) => {
@@ -193,6 +202,7 @@ function changeQty(api, products) {
 
 // EVENT LISTENER =================== DELETE THIS PRODUCT
 
+// Function that delete an item in the local storage and in the cart
 function deleteItem(api, products) {
       const itemDelete = document.querySelectorAll(".deleteItem");
       itemDelete.forEach((item) => {
@@ -220,6 +230,7 @@ firstName.addEventListener("change", function () {
       validFirstName(this);
 });
 
+// Function that return true or false if the regexp for the first name is respected
 function validFirstName(inputFirstName) {
       const firstNameRegExp = new RegExp("^([A-Z][a-z]+ ?-?)*$");
 
@@ -242,6 +253,7 @@ lastName.addEventListener("change", function () {
       validLastName(this);
 });
 
+// Function that return true or false if the regexp for the last name is respected
 function validLastName(inputLastName) {
       const lastNameRegExp = new RegExp("^([A-Z][a-z]+ ?-?)*$");
 
@@ -264,6 +276,7 @@ address.addEventListener("change", function () {
       validAddress(this);
 });
 
+// Function that return true or false if the regexp for the address is respected
 function validAddress(inputAddress) {
       const addressRegExp = new RegExp("^[0-9]{1,5} [A-Za-z -]+$");
 
@@ -286,6 +299,7 @@ city.addEventListener("change", function () {
       validCity(this);
 });
 
+// Function that return true or false if the regexp for the city is respected
 function validCity(inputCity) {
       const cityRegExp = new RegExp("^[0-9]{5} ([A-Z][a-z]+ ?-?)+$");
 
@@ -308,6 +322,7 @@ email.addEventListener("change", function () {
       validEmail(this);
 });
 
+// Function that return true or false if the regexp for the email is respected
 function validEmail(inputEmail) {
       let emailRegExp = new RegExp("^[A-Za-z-_]+@[A-Za-z]+.[A-Za-z]+$");
 
@@ -323,20 +338,20 @@ function validEmail(inputEmail) {
       }
 }
 
-// EVENT LISTENER =================== COMMANDER
+// EVENT LISTENER =================== ORDER
 
 const order = document.getElementById("order");
 let products = JSON.parse(localStorage.getItem("products"));
 order.addEventListener("click", function (e) {
       e.preventDefault();
+      // If there is no product, give an alert
       if (products === null || products.length < 1) {
             alert("Votre panier est vide, veuillez ajouter des articles pour les commander.");
-      } else if (validFirstName(firstName) && validLastName(lastName) && validAddress(address) && validCity(city) && validEmail(email)) {
-            console.log("OK");
-
+      }
+      // If all my inputs are true, create the object that I will send to the API with the details of the command and the contact infos
+      else if (validFirstName(firstName) && validLastName(lastName) && validAddress(address) && validCity(city) && validEmail(email)) {
             const productsId = [];
             products.forEach((product) => {
-                  console.log(product.id);
                   productsId.push(product.id);
             });
             const order = {
@@ -350,18 +365,20 @@ order.addEventListener("click", function (e) {
                   products: productsId,
             };
             orderProduct(order);
-      } else {
-            console.log("Pas OK");
       }
 });
 
+// Function that send my command and contact infos
 function orderProduct(order) {
+      // Call the API with method POST
       fetch("http://localhost:3000/api/products/order", {
             method: "POST",
+            // Tell to the API that I will give it json object
             headers: {
                   Accept: "application/json",
                   "Content-Type": "application/json",
             },
+            // Send my json object
             body: JSON.stringify(order),
       })
             .then(function (res) {
@@ -369,11 +386,12 @@ function orderProduct(order) {
                         return res.json();
                   }
             })
+            // Retrieve my order id thanks to the response
             .then(function (value) {
                   window.location = `./confirmation.html?orderId=${value.orderId}`;
                   localStorage.clear();
-                  console.log(value);
             })
+            // If the API cannot be called
             .catch(function (err) {
                   console.log(err);
 

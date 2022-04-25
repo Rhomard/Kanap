@@ -1,4 +1,4 @@
-// Get the product id thnaks to the url
+// Get the product id thanks to the url
 let onPageUrl = window.location;
 let url = new URL(onPageUrl);
 let id = url.searchParams.get("id");
@@ -8,11 +8,11 @@ fetch(`http://localhost:3000/api/products/${id}`)
       // First promise : if we get a response
       .then(function (res) {
             if (res.ok) {
-                  // Call the API in JSON format
+                  // Get the data in JSON
                   return res.json();
             }
       })
-      // Second promise : get the data in js
+      // Second promise : get the js object
       .then(function getOneKanapData(oneKanapData) {
             let products = JSON.parse(localStorage.getItem("products"));
             createProductCard(oneKanapData);
@@ -41,6 +41,7 @@ function nombresAvecEspaces(x) {
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
 
+// Function that create the Kanap card
 function createProductCard(oneKanapData) {
       const itemImg = document.getElementsByClassName("item__img")[0];
       const img = document.createElement("img");
@@ -55,6 +56,7 @@ function createProductCard(oneKanapData) {
       const colors = document.getElementById("colors");
 }
 
+// Function that replace the title page and create title product
 function loopForTitles(oneKanapData) {
       const title = document.getElementsByClassName("title");
       for (let i = 0; i < title.length; i++) {
@@ -62,6 +64,7 @@ function loopForTitles(oneKanapData) {
       }
 }
 
+// Function that create the color options
 function loopForOptions(oneKanapData) {
       for (let i = 0; i < oneKanapData.colors.length; i++) {
             const option = document.createElement("option");
@@ -71,55 +74,55 @@ function loopForOptions(oneKanapData) {
       }
 }
 
-// EVENT LISTENER =================== ADD TO CART
-
+// Function that create the local storage and add new products in
 function addDataToCart(oneKanapData) {
       let color = document.querySelector("#colors").value;
       let qty = document.querySelector("#quantity").valueAsNumber; //   let qtyNumber = parseInt(qty, 10);
       let addProduct = { color: color, id: id, quantity: qty };
       let products = JSON.parse(localStorage.getItem("products"));
 
+      // If the color or the quantity are not given, create an alert
       if (color == "" || qty == "" || isNaN(qty) == true) {
             alert("Vous devez obligatoirement choisir une couleur et indiquer une quantité.");
+            // If there is no products in the local storage, create the array and push the new product
       } else if (products === null) {
             products = [];
             products.push(addProduct);
             let productsJson = JSON.stringify(products);
             localStorage.setItem("products", productsJson);
-            console.log("Je crée le tableau");
             alert(`Vous avez ajouté ${addProduct.quantity} ${oneKanapData.name} en ${addProduct.color} à votre panier.}`);
+            // If there is already a product with the same id and color just add the quantity
       } else {
             if (products.some((e) => e.id === addProduct.id && e.color === addProduct.color)) {
                   let objIndex = products.findIndex((product) => product.id === addProduct.id && product.color === addProduct.color);
                   products[objIndex].quantity = products[objIndex].quantity += addProduct.quantity;
-                  console.log("J'ajoute la quantité");
                   alert(`Vous avez ajouté ${addProduct.quantity} ${oneKanapData.name} en ${addProduct.color} à votre panier.`);
+                  // If there is already a product but not with the same id and color, push the new product in array in first position
             } else {
                   products.unshift(addProduct);
-                  console.log("Je crée un objet en plus");
                   alert(`Vous avez ajouté ${addProduct.quantity} ${oneKanapData.name} en ${addProduct.color} à votre panier.`);
             }
             let productsJson = JSON.stringify(products);
             localStorage.setItem("products", productsJson);
       }
 
+      // OLD METHOD
       //         let itemAlreadyInCart = false;
       //         for (product of products) {
       //               if (addProduct.id === product.id && addProduct.color === product.color) {
       //                     itemAlreadyInCart = true;
       //                     product.quantity = product.quantity + addProduct.quantity;
-      //                     console.log("J'ajoute la quantité");
       //               }
       //         }
       //         if (itemAlreadyInCart == false) {
       //               products.unshift(addProduct);
-      //               console.log("Je crée un objet en plus");
       //         }
       //         let productsJson = JSON.stringify(products);
       //         localStorage.setItem("products", productsJson);
       //   }
 }
 
+// EVENT LISTENER =================== ADD TO CART
 function addToLocalStorage(oneKanapData) {
       const addToCart = document.getElementById("addToCart");
       addToCart.addEventListener("click", function () {
@@ -131,7 +134,6 @@ function addToLocalStorage(oneKanapData) {
 }
 
 // TOTAL QUANTITY =================== Function that refresh the total of products in the cart by the local storage
-
 function loopForTotalQty(products) {
       let sumQty = 0;
       if (products === null) {
