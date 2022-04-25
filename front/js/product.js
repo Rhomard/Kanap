@@ -90,7 +90,7 @@ function addDataToCart(oneKanapData) {
             products.push(addProduct);
             let productsJson = JSON.stringify(products);
             localStorage.setItem("products", productsJson);
-            alert(`Vous avez ajouté ${addProduct.quantity} ${oneKanapData.name} en ${addProduct.color} à votre panier.}`);
+            alert(`Vous avez ajouté ${addProduct.quantity} ${oneKanapData.name} en ${addProduct.color} à votre panier.`);
             // If there is already a product with the same id and color just add the quantity
       } else {
             if (products.some((e) => e.id === addProduct.id && e.color === addProduct.color)) {

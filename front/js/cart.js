@@ -241,7 +241,7 @@ function validFirstName(inputFirstName) {
             document.getElementById("firstNameErrorMsg").innerText = "Votre prénom doit contenir au moins 3 caractères.";
             return false;
       } else {
-            document.getElementById("firstNameErrorMsg").innerText = "Prénom OK";
+            document.getElementById("firstNameErrorMsg").innerText = "";
             return true;
       }
 }
@@ -264,7 +264,7 @@ function validLastName(inputLastName) {
             document.getElementById("lastNameErrorMsg").innerText = "Votre nom doit contenir au moins 3 caractères.";
             return false;
       } else {
-            document.getElementById("lastNameErrorMsg").innerText = "Nom OK";
+            document.getElementById("lastNameErrorMsg").innerText = "";
             return true;
       }
 }
@@ -281,13 +281,13 @@ function validAddress(inputAddress) {
       const addressRegExp = new RegExp("^[0-9]{1,5} [A-Za-z -]+$");
 
       if (!addressRegExp.test(inputAddress.value)) {
-            document.getElementById("addressErrorMsg").innerText = "Exemple : 436 avenue de Napoléon";
+            document.getElementById("addressErrorMsg").innerText = "Exemple : 436 avenue fleurie";
             return false;
       } else if (inputAddress.value.length < 7) {
             document.getElementById("addressErrorMsg").innerText = "Vérifiez votre adresse, elle semble incomplète.";
             return false;
       } else {
-            document.getElementById("addressErrorMsg").innerText = "Adresse OK";
+            document.getElementById("addressErrorMsg").innerText = "";
             return true;
       }
 }
@@ -310,7 +310,7 @@ function validCity(inputCity) {
             document.getElementById("cityErrorMsg").innerText = "Vérifiez votre adresse, elle semble incomplète";
             return false;
       } else {
-            document.getElementById("cityErrorMsg").innerText = "Adresse OK";
+            document.getElementById("cityErrorMsg").innerText = "";
             return true;
       }
 }
@@ -333,7 +333,7 @@ function validEmail(inputEmail) {
             document.getElementById("emailErrorMsg").innerText = "Vérifiez votre email, elle semble incomplète";
             return false;
       } else {
-            document.getElementById("emailErrorMsg").innerText = "email OK";
+            document.getElementById("emailErrorMsg").innerText = "";
             return true;
       }
 }
@@ -341,9 +341,9 @@ function validEmail(inputEmail) {
 // EVENT LISTENER =================== ORDER
 
 const order = document.getElementById("order");
-let products = JSON.parse(localStorage.getItem("products"));
 order.addEventListener("click", function (e) {
       e.preventDefault();
+      let products = JSON.parse(localStorage.getItem("products"));
       // If there is no product, give an alert
       if (products === null || products.length < 1) {
             alert("Votre panier est vide, veuillez ajouter des articles pour les commander.");
